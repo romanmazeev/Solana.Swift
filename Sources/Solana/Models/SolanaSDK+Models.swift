@@ -234,6 +234,15 @@ public struct TokenAmount: Codable, Hashable {
     public let uiAmount: Float64
     public let uiAmountString: String
 }
+
+public struct NewTokenAmount: Codable, Hashable {
+    public let address: String
+    public let amount: String
+    public let decimals: UInt8
+    public let uiAmount: Float64
+    public let uiAmountString: String
+}
+
 public struct Version: Decodable {
     public let solanaCore: String
 

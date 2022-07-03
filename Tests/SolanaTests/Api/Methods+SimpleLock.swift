@@ -502,8 +502,8 @@ extension Api {
         return result
     }
 
-    func getTokenLargestAccounts(pubkey: String, commitment: Commitment? = nil) -> Result<[TokenAmount], Error>? {
-        var result: Result<[TokenAmount], Error>?
+    func getTokenLargestAccounts(pubkey: String, commitment: Commitment? = nil) -> Result<[NewTokenAmount], Error>? {
+        var result: Result<[NewTokenAmount], Error>?
         let lock = RunLoopSimpleLock()
         lock.dispatch { [weak self] in
             self?.getTokenLargestAccounts(pubkey: pubkey, commitment: commitment) {
