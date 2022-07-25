@@ -14,7 +14,6 @@ extension Action {
         userAccount: Account,
         onComplete: @escaping (Result<TransactionID, Error>) -> Void
     ) {
-
         ContResult.init { cb in
             self.findSPLTokenDestinationAddress(
                 mintAddress: nftPublicKey.base58EncodedString,
@@ -67,7 +66,7 @@ extension Action {
 
         }.flatMap { (instructions, account) in
             ContResult.init { cb in
-                self.serializeAndSendWithFee(instructions: instructions, signers: [account]) {
+                self.serializeAndSendWithFee(instructions: instructions, signers: [account, userAccount]) {
                     cb($0)
                 }
             }
