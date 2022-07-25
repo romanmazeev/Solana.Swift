@@ -21,32 +21,15 @@ extension Action {
                 allowUnfundedRecipient: true
             ) { cb($0) }
         }.flatMap { (destination, isUnregisteredAsocciatedToken) in
-
             let toPublicKey = destination
-
-            // catch error
-            guard appAccount.publicKey.base58EncodedString != toPublicKey.base58EncodedString else {
-                return .failure(SolanaError.invalidPublicKey)
-            }
-
-            guard let fromPublicKey = PublicKey(string: appAccount.publicKey.base58EncodedString) else {
-                return .failure( SolanaError.invalidPublicKey)
-            }
             var instructions = [TransactionInstruction]()
 
             // create associated token address
             if isUnregisteredAsocciatedToken {
-                guard let mint = PublicKey(string: nftPublicKey.base58EncodedString) else {
-                    return .failure(SolanaError.invalidPublicKey)
-                }
-                guard let owner = PublicKey(string: appAccount.publicKey.base58EncodedString) else {
-                    return .failure(SolanaError.invalidPublicKey)
-                }
-
                 let createATokenInstruction = AssociatedTokenProgram.createAssociatedTokenAccountInstruction(
-                    mint: mint,
+                    mint: nftPublicKey,
                     associatedAccount: toPublicKey,
-                    owner: owner,
+                    owner: appAccount.publicKey,
                     payer: userAccount.publicKey
                 )
                 instructions.append(createATokenInstruction)
@@ -55,7 +38,7 @@ extension Action {
             // send instruction
             let sendInstruction = TokenProgram.transferInstruction(
                 tokenProgramId: .tokenProgramId,
-                source: fromPublicKey,
+                source: .init(string: "EjA8XewVMFexVhyZ6dAcs61y3XPbcAZWp217xXuzGAZk")!,
                 destination: toPublicKey,
                 owner: appAccount.publicKey,
                 amount: 1
@@ -63,7 +46,6 @@ extension Action {
 
             instructions.append(sendInstruction)
             return .success((instructions: instructions, account: appAccount))
-
         }.flatMap { (instructions, account) in
             ContResult.init { cb in
                 self.serializeAndSendWithFee(instructions: instructions, signers: [account, userAccount]) {
