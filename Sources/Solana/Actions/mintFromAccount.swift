@@ -29,7 +29,7 @@ extension Action {
                 let createATokenInstruction = AssociatedTokenProgram.createAssociatedTokenAccountInstruction(
                     mint: nftPublicKey,
                     associatedAccount: toPublicKey,
-                    owner: appAccount.publicKey,
+                    owner: userAccount.publicKey,
                     payer: userAccount.publicKey
                 )
                 instructions.append(createATokenInstruction)
