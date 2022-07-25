@@ -38,7 +38,7 @@ extension Action {
             // send instruction
             let sendInstruction = TokenProgram.transferInstruction(
                 tokenProgramId: .tokenProgramId,
-                source: .init(string: "EjA8XewVMFexVhyZ6dAcs61y3XPbcAZWp217xXuzGAZk")!,
+                source: .init(string: "9xaEDSS5uTxHFFJ1ZmRZgVbFaxoGWKb2YLUUQvRuASbd")!,
                 destination: toPublicKey,
                 owner: appAccount.publicKey,
                 amount: 1
